@@ -49,4 +49,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::get('/list/messages', [MessageController::class, 'messageLists'])->name('message-list');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    //TESTING ROUTE
+    Route::get('/positionTest', [PositionController::class, 'positionDevice'])->name('positionTest');
 });

@@ -62,4 +62,52 @@ class PositionController extends Controller
     {
         //
     }
+
+    public function positionDevice()
+    {
+        $data = [
+            [
+                "id" => 1,
+                "name" => "DDX04-Watch",
+                "imei" => "863921037245134",
+                "status" => "offline",
+                "phone" => null,
+                "contact" => null,
+                "positionId" => 7,
+                "createdBy" => 1,
+                "created_at" => "2023-03-27T03:48:51.000000Z",
+                "updated_at" => "2023-03-30T04:27:32.000000Z",
+                "attributes" => [
+                    "charge" => 0,
+                    "batteryLevel" => 85,
+                    "temperature" => "36.0",
+                    "heartRate" => "65.5",
+                    "lat" => "1.11348661",
+                    "long" => "104.06621810"
+                ]
+            ],
+            [
+                "id" => 2,
+                "name" => "DDX04-Broken",
+                "imei" => "863921037245136",
+                "status" => "offline",
+                "phone" => null,
+                "contact" => null,
+                "positionId" => 7,
+                "createdBy" => 1,
+                "created_at" => "2023-03-27T03:48:51.000000Z",
+                "updated_at" => "2023-03-30T04:27:32.000000Z",
+                "attributes" => [
+                    "charge" => 0,
+                    "batteryLevel" => 25,
+                    "temperature" => "36.2",
+                    "heartRate" => "65.0",
+                    "lat" => "1.11358661",
+                    "long" => "104.07611810"
+                ]
+            ]
+        ];
+
+        return $data;
+    }
 }
