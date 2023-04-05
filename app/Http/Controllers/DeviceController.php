@@ -35,7 +35,7 @@ class DeviceController extends Controller
             $req = $request->validated();
 
             $req['status'] = 'offline';
-            $req['created_by'] = 1;
+            $req['created_by'] = auth()->user()->id;
 
             $res = $this->storeServer($req);
 
@@ -176,5 +176,32 @@ class DeviceController extends Controller
         return DataTables::of($devices)
             ->addIndexColumn()
             ->make(true);
+    }
+
+    public function updateDevice(Request $request)
+    {
+        $device = Device::where('device_id', $request->id)->first();
+        try {
+            $device->update([
+                'status' => $request->status,
+            ]);
+            return 0;
+        } catch (\Exception $err) {
+            return 0;
+        }
+
+        // try {
+        //     $valid = $request->validated();
+
+        //     $position = Position::create($valid);
+
+        //     Device::find($position->deviceId)->update([
+        //         'positionId' => $position->id
+        //     ]);
+
+        //     return $this->sendResponse($request->all(), 'Data added succesfully');
+        // } catch (\Exception $err) {
+        //     return $this->sendError($err, $err->getMessage(), 400);
+        // }
     }
 }
