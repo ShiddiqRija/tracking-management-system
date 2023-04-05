@@ -100,8 +100,8 @@
                 data: 'heartRate',
                 name: 'heartRate'
             }, {
-                data: 'tempWeather',
-                name: 'tempWeather'
+                data: 'weatherTemp',
+                name: 'weatherTemp'
             }],
             columnDefs: [{
                 targets: 1,
