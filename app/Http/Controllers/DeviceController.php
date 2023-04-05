@@ -181,27 +181,15 @@ class DeviceController extends Controller
     public function updateDevice(Request $request)
     {
         $device = Device::where('device_id', $request->id)->first();
+        
         try {
             $device->update([
                 'status' => $request->status,
             ]);
-            return 0;
+
+            return $this->sendResponse($device, 'Device updated successfully');
         } catch (\Exception $err) {
-            return 0;
+            return $this->sendError($err, $err->getMessage(), 400);
         }
-
-        // try {
-        //     $valid = $request->validated();
-
-        //     $position = Position::create($valid);
-
-        //     Device::find($position->deviceId)->update([
-        //         'positionId' => $position->id
-        //     ]);
-
-        //     return $this->sendResponse($request->all(), 'Data added succesfully');
-        // } catch (\Exception $err) {
-        //     return $this->sendError($err, $err->getMessage(), 400);
-        // }
     }
 }
