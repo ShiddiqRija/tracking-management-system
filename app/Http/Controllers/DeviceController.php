@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DeviceRequest;
 use App\Models\Device;
+use App\Models\Position;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -35,7 +36,7 @@ class DeviceController extends Controller
             $req = $request->validated();
 
             $req['status'] = 'offline';
-            $req['created_by'] = 1;
+            $req['created_by'] = auth()->user()->id;
 
             $res = $this->storeServer($req);
 
@@ -175,6 +176,42 @@ class DeviceController extends Controller
 
         return DataTables::of($devices)
             ->addIndexColumn()
+            ->addColumn('heartRate', function ($data) {
+                $position = Position::where('id', $data->position_id)->first();
+                if ($position != null) {
+                    $attributes = json_decode($position->attributes);
+                    $heartRate = $attributes->heartRate;
+                    return $heartRate;
+                } else {
+                    return 0;
+                }
+            })
+            ->addColumn('weatherTemp', function ($data) {
+                $position = Position::where('id', $data->position_id)->first();
+                if ($position != null) {
+                    $attributes = json_decode($position->attributes);
+                    $weatherTemp = $attributes->weatherTemp;
+                    return $weatherTemp;
+                } else {
+                    return 0;
+                }
+            })
+            ->rawColumns(['heartRate', 'weatherTemp'])
             ->make(true);
+    }
+
+    public function updateDevice(Request $request)
+    {
+        $device = Device::where('device_id', $request->id)->first();
+
+        try {
+            $device->update([
+                'status' => $request->status,
+            ]);
+
+            return $this->sendResponse($device, 'Device updated successfully');
+        } catch (\Exception $err) {
+            return $this->sendError($err, $err->getMessage(), 400);
+        }
     }
 }

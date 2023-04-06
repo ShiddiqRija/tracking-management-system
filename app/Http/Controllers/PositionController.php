@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PositionRequest;
+use App\Models\Device;
 use App\Models\Position;
 use Illuminate\Http\Request;
 
@@ -26,7 +28,7 @@ class PositionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Position $request)
     {
         //
     }
@@ -61,6 +63,28 @@ class PositionController extends Controller
     public function destroy(Position $position)
     {
         //
+    }
+
+    public function storePosition(Request $request)
+    {
+        //Check Device Id
+        $device = Device::where('device_id', $request->device_id)->first();
+        if ($device) {
+            try {
+                $position = Position::create($request->all());
+
+                $device = Device::where('device_id', $position->device_id)->first();
+
+                $device->update([
+                    'position_id' => $position->id,
+                    'last_update' => round(microtime(true) * 1000)
+                ]);
+
+                return $this->sendResponse($position, 'Position added successfully');
+            } catch (\Exception $err) {
+                return $this->sendError($err, $err->getMessage(), 400);
+            }
+        }
     }
 
     public function positionDevice()

@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('status');
             $table->bigInteger('last_update')->default(0);
             $table->bigInteger('position_id')->default(0);
-            $table->string('phone');
-            $table->string('contact');
+            $table->string('phone')->nullable();
+            $table->string('contact')->nullable();
             $table->integer('created_by');
             $table->timestamps();
         });
