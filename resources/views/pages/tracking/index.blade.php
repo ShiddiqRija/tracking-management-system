@@ -75,6 +75,7 @@
 <script src="https://maps.google.com/maps/api/js?key=AIzaSyCMuyTDQ4zd__ZPPja86kIefxTcK2fiqVE"></script>
 <!-- Gmaps file -->
 <script src="{{ asset('assets/libs/gmaps/gmaps.min.js') }}"></script>
+<script src="{{ asset('assets/libs/gmaps/markerCluster.js') }}"></script>
 <!-- GMaps init -->
 <script type="text/javascript">
     $(document).ready(function() {
@@ -92,7 +93,34 @@
             lat: 1.1134006,
             lng: 104.0652815,
             zoom: 11,
-            disableDefaultUI: true
+            disableDefaultUI: true,
+            markerClusterer: function(map) {
+                return new MarkerClusterer(map, [], {
+                    styles: [{
+                        url: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m1.png',
+                        height: 53,
+                        width: 53,
+                        textColor: '#ffffff',
+                        textSize: 14,
+                        backgroundPosition: '0 0'
+                    }, {
+                        url: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m2.png',
+                        height: 56,
+                        width: 56,
+                        textColor: '#ffffff',
+                        textSize: 14,
+                        backgroundPosition: '-48px 0'
+                    }, {
+                        url: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m3.png',
+                        height: 66,
+                        width: 66,
+                        textColor: '#ffffff',
+                        textSize: 14,
+                        backgroundPosition: '-96px 0'
+                    }],
+                    maxZoom: 13
+                });
+            }
         });
 
         function markerInit() {
@@ -134,8 +162,6 @@
         //update center to the device
         $(document).on('click', '.device-item-list', function(e) {
             e.preventDefault();
-
-            console.log('click');
 
             var lat, lng;
 
