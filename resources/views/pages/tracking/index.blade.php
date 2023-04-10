@@ -146,7 +146,7 @@
 
         function markerUpdate() {
             $.ajax({
-                url: "{{ route('positionTest') }}",
+                url: "{{ route('deviceInfo') }}",
                 type: "GET",
                 success: function(data) {
                     for (let i = 0; i < data.length; i++) {
