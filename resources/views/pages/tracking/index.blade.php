@@ -125,7 +125,7 @@
 
         function markerInit() {
             $.ajax({
-                url: "{{ route('positionTest') }}",
+                url: "{{ route('deviceInfo') }}",
                 type: "GET",
                 success: function(data) {
                     for (var i = 0; i < markers.length; i++) {
@@ -133,10 +133,10 @@
                     }
 
                     for (let i = 0; i < data.length; i++) {
-                        let location = data[i].attributes
+                        let location = data[i].location
                         markers.push(map.addMarker({
-                            lat: location.lat,
-                            lng: location.long,
+                            lat: location.latitude,
+                            lng: location.longitude,
                             title: data[i].name
                         }))
                     }
@@ -151,8 +151,8 @@
                 success: function(data) {
                     for (let i = 0; i < data.length; i++) {
                         markers[i].setPosition({
-                            lat: parseFloat(data[i].attributes.lat),
-                            lng: parseFloat(data[i].attributes.long),
+                            lat: parseFloat(data[i].location.latitude),
+                            lng: parseFloat(data[i].location.longitude),
                         });
                     }
                 }
@@ -197,17 +197,18 @@
 
         function getDevice() {
             $.ajax({
-                url: "{{ route('positionTest') }}",
+                url: "{{ route('deviceInfo') }}",
                 type: "GET",
                 success: function(data) {
                     var deviceList = $("#device-list");
                     deviceList.empty();
                     $.each(data, function(index, device) {
+                        let attributes = JSON.parse(device.location.attributes)
                         var button = $("<button>")
                             .addClass("list-group-item list-group-item-action device-item-list")
                             .attr("data-marker-index", `${index}`)
                             .attr("aria-current", "true")
-                            .html('<div class="d-flex w-100 justify-content-between"><div><h5 class="mb-1">' + device.name + '</h5><p class="mb-1"><i class="mdi mdi-account-heart"></i> : ' + device.attributes.heartRate + ' <i class="mdi mdi-temperature-celsius"></i> : ' + device.attributes.temperature + '</p></div><span class="my-auto"><small><i class="mdi mdi-battery"></i>' + device.attributes.batteryLevel + '%</small></span></div>');
+                            .html('<div class="d-flex w-100 justify-content-between"><div><h5 class="mb-1">' + device.name + '</h5><p class="mb-1"><i class="mdi mdi-account-heart"></i> : ' + attributes.heartRate + ' <i class="mdi mdi-temperature-celsius"></i> : ' + attributes.weatherTemp + '</p></div><span class="my-auto"><small><i class="mdi mdi-battery"></i>' + attributes.batteryLevel + '%</small></span></div>');
                         deviceList.append(button);
                     });
                 }
