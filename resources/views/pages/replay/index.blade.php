@@ -17,39 +17,7 @@
         </div>
 
         <div class="list-group" id="device-list" style="max-height: 78vh; overflow-y: auto;">
-            <!-- <button class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <div>
-                        <h5 class="mb-1">Device Name</h5>
-                        <p class="mb-1"><i class="mdi mdi-account-heart"></i> : 70 <i class="mdi mdi-temperature-celsius"></i> : 36.2</p>
-                    </div>
-                    <span class="my-auto">
-                        <small><i class="mdi mdi-battery"></i>45%</small>
-                    </span>
-                </div>
-            </button>
-            <button class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <div>
-                        <h5 class="mb-1">Device Name 1</h5>
-                        <p class="mb-1"><i class="mdi mdi-account-heart"></i> : 71 <i class="mdi mdi-temperature-celsius"></i> : 36.2</p>
-                    </div>
-                    <span class="my-auto">
-                        <small><i class="mdi mdi-battery"></i>80%</small>
-                    </span>
-                </div>
-            </button>
-            <button class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <div>
-                        <h5 class="mb-1">Device Name 2</h5>
-                        <p class="mb-1"><i class="mdi mdi-account-heart"></i> : 72 <i class="mdi mdi-temperature-celsius"></i> : 36.2</p>
-                    </div>
-                    <span class="my-auto">
-                        <small><i class="mdi mdi-battery"></i>22%</small>
-                    </span>
-                </div>
-            </button> -->
+
         </div>
     </div>
 </div>
@@ -157,7 +125,7 @@
                                         <tr>
                                             <th scope="row" class="align-middle">Replay</th>
                                             <td>
-                                                <a href="{{ route('replay') }}">
+                                                <a href="{{ route('devices.create') }}">
                                                     <button type="button" class="btn btn-primary waves-effect waves-light">
                                                         Replay
                                                     </button>

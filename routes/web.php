@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\ReplayController;
 use App\Http\Controllers\Settings\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     })->name('dashboard');
 
     Route::resource('tracking', PositionController::class);
+    Route::get('/replay', [ReplayController::class, 'index'])->name('replay');
     Route::resource('devices', DeviceController::class);
     Route::resource('messages', MessageController::class);
 
