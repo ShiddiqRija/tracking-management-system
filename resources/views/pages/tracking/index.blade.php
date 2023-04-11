@@ -84,9 +84,9 @@
 
         markerInit();
 
-        setInterval(() => {
-            markerUpdate();
-        }, 5000);
+        // setInterval(() => {
+        //     markerUpdate();
+        // }, 5000);
 
         map = new GMaps({
             div: '#map',
@@ -137,7 +137,37 @@
                         markers.push(map.addMarker({
                             lat: location.latitude,
                             lng: location.longitude,
-                            title: data[i].name
+                            title: data[i].name,
+                            infoWindow: {
+                                content: `
+                                <table class="table table-bordered mb-0">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">Device</th>
+                                            <td>${data[i].name}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Contact</th>
+                                            <td>${data[i].contact == null ? '-' : data[i].contact}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Status</th>
+                                            <td>${data[i].status}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="align-middle">Replay</th>
+                                            <td>
+                                                <a href="{{ route('devices.create') }}">
+                                                    <button type="button" class="btn btn-primary waves-effect waves-light">
+                                                        Replay
+                                                    </button>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                `
+                            }
                         }))
                     }
                 }
