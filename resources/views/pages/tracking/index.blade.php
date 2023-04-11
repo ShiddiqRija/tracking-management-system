@@ -84,9 +84,9 @@
 
         markerInit();
 
-        // setInterval(() => {
-        //     markerUpdate();
-        // }, 5000);
+        setInterval(() => {
+            markerUpdate();
+        }, 5000);
 
         map = new GMaps({
             div: '#map',
