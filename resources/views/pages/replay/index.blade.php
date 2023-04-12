@@ -32,6 +32,20 @@
                 </div>
 
                 <div class="col-sm-12">
+                    <div class="mb-3">
+                        <label class="form-label" for="from">From</label>
+                        <input class="form-control" type="datetime-local" id="from" name="from">
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="mb-3">
+                        <label class="form-label" for="to">To</label>
+                        <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="to" name="to">
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
                     <button type="button" class="btn btn-primary waves-effect waves-light">
                         Show Replay
                     </button>
@@ -70,6 +84,55 @@
         $(document).ready(function() {
             $('#device').select2();
             $('#period').select2();
+            $('#from').closest('.col-sm-12').hide();
+            $('#to').closest('.col-sm-12').hide();
+
+            $('#period').on('change', function() {
+                if ($(this).val() === 'Custom') {
+                    $('#from').closest('.col-sm-12').show();
+                    $('#to').closest('.col-sm-12').show();
+                    inputFrom();
+                    inputTo();
+                } else {
+                    $('#from').closest('.col-sm-12').hide();
+                    $('#to').closest('.col-sm-12').hide();
+                }
+            });
+
+            function datetimeLocal(datetime) {
+                const dt = new Date(datetime);
+                dt.setMinutes(dt.getMinutes() - dt.getTimezoneOffset());
+                return dt.toISOString().slice(0, 16);
+            }
+
+            function inputFrom() {
+                const from = document.getElementById('from');
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = (now.getMonth() + 1).toString().padStart(2, '0');
+                const day = now.getDate().toString().padStart(2, '0');
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const seconds = now.getSeconds().toString().padStart(2, '0');
+
+                const datetime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+                from.value = datetimeLocal(datetime);
+            }
+
+            function inputTo() {
+                const to = document.getElementById('to');
+                const now = new Date();
+                now.setHours(now.getHours() + 1);
+                const year = now.getFullYear();
+                const month = (now.getMonth() + 1).toString().padStart(2, '0');
+                const day = now.getDate().toString().padStart(2, '0');
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const seconds = now.getSeconds().toString().padStart(2, '0');
+
+                const datetime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+                to.value = datetimeLocal(datetime);
+            }
         });
     </script>
     <!-- GMaps init -->
