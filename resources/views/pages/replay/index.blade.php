@@ -9,227 +9,82 @@
     <div class="col-xl-3 vh-84">
         <div class="card">
             <div class="card-body">
+
                 <div class="col-sm-12">
-                    <label class="visually-hidden" for="search-devices">Device</label>
-                    <input type="text" class="form-control" id="search-devices" placeholder="Search Device">
+                    <div class="mb-3">
+                        <label class="form-label" for="device">Device</label>
+                        <select id="device" name="device" class="form-control" required>
+                            @foreach ($devices as $device)
+                            <option value="{{ $device->device_id }}">{{ $device->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
+
+                <div class="col-sm-12">
+                    <div class="mb-3">
+                        <label class="form-label" for="period">Period</label>
+                        <select id="period" name="period" class="form-control" required>
+                            <option value="Today">Today</option>
+                            <option value="Custom">Custom</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-primary waves-effect waves-light">
+                        Show Replay
+                    </button>
+                </div>
+
             </div>
         </div>
-
-        <div class="list-group" id="device-list" style="max-height: 78vh; overflow-y: auto;">
-
-        </div>
     </div>
-</div>
 
-@endsection
+    @endsection
 
-@push('css')
-<!-- Action Notif -->
-<link href="{{ asset('assets/libs/toastr/build/toastr.min.css') }}" rel="stylesheet" type="text/css" />
-<style>
-    .page-content {
-        padding: calc(70px + 24px) calc(24px / 2) 0px calc(24px / 2);
-    }
-</style>
-@endpush
+    @push('css')
+    <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
+    <!-- Action Notif -->
+    <link href="{{ asset('assets/libs/toastr/build/toastr.min.css') }}" rel="stylesheet" type="text/css" />
+    <style>
+        .page-content {
+            padding: calc(70px + 24px) calc(24px / 2) 0px calc(24px / 2);
+        }
+    </style>
+    @endpush
 
-@push('script')
-<!-- Action Notif -->
-<script src="{{ asset('assets/libs/toastr/build/toastr.min.js') }}"></script>
-<script src="{{ asset('assets/js/pages/notif.js') }}"></script>
-<!-- google maps api -->
-<!-- <script src="https://maps.google.com/maps/api/js?key=AIzaSyB5OXoMmPKwLbrSWAF8D2cp_yP0lDS8oPo"></script> -->
-<script src="https://maps.google.com/maps/api/js?key=AIzaSyCMuyTDQ4zd__ZPPja86kIefxTcK2fiqVE"></script>
-<!-- Gmaps file -->
-<script src="{{ asset('assets/libs/gmaps/gmaps.min.js') }}"></script>
-<script src="{{ asset('assets/libs/gmaps/markerCluster.js') }}"></script>
-<!-- GMaps init -->
-<script type="text/javascript">
-    $(document).ready(function() {
-        var map;
-        var markers = [];
-
-        markerInit();
-
-        setInterval(() => {
-            markerUpdate();
-        }, 5000);
-
-        map = new GMaps({
-            div: '#map',
-            lat: 1.1134006,
-            lng: 104.0652815,
-            zoom: 11,
-            disableDefaultUI: true,
-            markerClusterer: function(map) {
-                return new MarkerClusterer(map, [], {
-                    styles: [{
-                        url: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m1.png',
-                        height: 53,
-                        width: 53,
-                        textColor: '#ffffff',
-                        textSize: 14,
-                        backgroundPosition: '0 0'
-                    }, {
-                        url: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m2.png',
-                        height: 56,
-                        width: 56,
-                        textColor: '#ffffff',
-                        textSize: 14,
-                        backgroundPosition: '-48px 0'
-                    }, {
-                        url: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m3.png',
-                        height: 66,
-                        width: 66,
-                        textColor: '#ffffff',
-                        textSize: 14,
-                        backgroundPosition: '-96px 0'
-                    }],
-                    maxZoom: 13
-                });
-            }
+    @push('script')
+    <script src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script>
+    <!-- Action Notif -->
+    <script src="{{ asset('assets/libs/toastr/build/toastr.min.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/notif.js') }}"></script>
+    <!-- google maps api -->
+    <!-- <script src="https://maps.google.com/maps/api/js?key=AIzaSyB5OXoMmPKwLbrSWAF8D2cp_yP0lDS8oPo"></script> -->
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyCMuyTDQ4zd__ZPPja86kIefxTcK2fiqVE"></script>
+    <!-- Gmaps file -->
+    <script src="{{ asset('assets/libs/gmaps/gmaps.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/gmaps/markerCluster.js') }}"></script>
+    <!-- Page JS -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#device').select2();
+            $('#period').select2();
         });
+    </script>
+    <!-- GMaps init -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var map;
 
-        function markerInit() {
-            $.ajax({
-                url: "{{ route('deviceInfo') }}",
-                type: "GET",
-                success: function(data) {
-                    for (var i = 0; i < markers.length; i++) {
-                        markers[i].setMap(null)
-                    }
-
-                    for (let i = 0; i < data.length; i++) {
-                        let location = data[i].location
-                        markers.push(map.addMarker({
-                            lat: location.latitude,
-                            lng: location.longitude,
-                            title: data[i].name,
-                            infoWindow: {
-                                content: `
-                                <table class="table table-bordered mb-0">
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">Device</th>
-                                            <td>${data[i].name}</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Contact</th>
-                                            <td>${data[i].contact == null ? '-' : data[i].contact}</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Status</th>
-                                            <td>${data[i].status}</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row" class="align-middle">Replay</th>
-                                            <td>
-                                                <a href="{{ route('devices.create') }}">
-                                                    <button type="button" class="btn btn-primary waves-effect waves-light">
-                                                        Replay
-                                                    </button>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                `
-                            }
-                        }))
-                    }
-                }
+            map = new GMaps({
+                div: '#map',
+                lat: 1.1134006,
+                lng: 104.0652815,
+                zoom: 11,
+                disableDefaultUI: true,
             });
-        }
 
-        function markerUpdate() {
-            $.ajax({
-                url: "{{ route('deviceInfo') }}",
-                type: "GET",
-                success: function(data) {
-                    for (let i = 0; i < data.length; i++) {
-                        markers[i].setPosition({
-                            lat: parseFloat(data[i].location.latitude),
-                            lng: parseFloat(data[i].location.longitude),
-                        });
-                    }
-                }
-            });
-        }
-
-        //update center to the device
-        $(document).on('click', '.device-item-list', function(e) {
-            e.preventDefault();
-
-            var lat, lng;
-
-            var $index = $(this).data('marker-index');
-            var $lat = $(this).data('marker-lat');
-            var $lng = $(this).data('marker-lng');
-
-            if ($index != undefined) {
-                // using indices
-                var position = map.markers[$index].getPosition();
-                lat = position.lat();
-                lng = position.lng();
-            } else {
-                // using coordinates
-                lat = $lat;
-                lng = $lng;
-            }
-
-            map.setCenter(lat, lng);
         });
-
-    });
-</script>
-<!-- Device init -->
-<script type="text/javascript">
-    $(document).ready(function() {
-        getDevice();
-
-        setInterval(() => {
-            getDevice();
-        }, 5000);
-
-
-        function getDevice() {
-            $.ajax({
-                url: "{{ route('deviceInfo') }}",
-                type: "GET",
-                success: function(data) {
-                    var deviceList = $("#device-list");
-                    deviceList.empty();
-                    $.each(data, function(index, device) {
-                        let attributes = JSON.parse(device.location.attributes)
-                        var button = $("<button>")
-                            .addClass("list-group-item list-group-item-action device-item-list")
-                            .attr("data-marker-index", `${index}`)
-                            .attr("aria-current", "true")
-                            .html('<div class="d-flex w-100 justify-content-between"><div><h5 class="mb-1">' + device.name + '</h5><p class="mb-1"><i class="mdi mdi-account-heart"></i> : ' + attributes.heartRate + ' <i class="mdi mdi-temperature-celsius"></i> : ' + attributes.weatherTemp + '</p></div><span class="my-auto"><small><i class="mdi mdi-battery"></i>' + attributes.batteryLevel + '%</small></span></div>');
-                        deviceList.append(button);
-                    });
-                }
-            });
-        }
-
-        function filterButtons(searchValue) {
-            var buttons = $("#device-list button");
-            buttons.each(function() {
-                var buttonName = $(this).find("h5").text().toLowerCase();
-                if (buttonName.includes(searchValue)) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
-                }
-            });
-        }
-
-        $("#search-devices").on("input", function() {
-            var searchValue = $(this).val().toLowerCase();
-            filterButtons(searchValue);
-        });
-
-    });
-</script>
-@endpush
+    </script>
+    @endpush

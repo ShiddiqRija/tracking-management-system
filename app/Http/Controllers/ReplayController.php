@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Device;
 use Illuminate\Http\Request;
 
 class ReplayController extends Controller
@@ -11,7 +12,9 @@ class ReplayController extends Controller
      */
     public function index()
     {
-        return view('pages.replay.index');
+        $devices = Device::all();
+
+        return view('pages.replay.index', compact('devices'));
     }
 
     /**
