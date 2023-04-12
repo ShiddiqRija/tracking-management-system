@@ -30,6 +30,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
 
     Route::resource('tracking', PositionController::class);
     Route::get('/replay', [ReplayController::class, 'index'])->name('replay');
+    Route::post('/replay', [ReplayController::class, 'store'])->name('replay.store');
     Route::resource('devices', DeviceController::class);
     Route::resource('messages', MessageController::class);
 

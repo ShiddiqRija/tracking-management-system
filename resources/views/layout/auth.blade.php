@@ -8,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Tracking Management System Platform" name="description" />
     <meta content="Nordic Solutions Asia" name="author" />
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
     <meta content='width=device-width, initial-scale=1' user-scalable='no' name='viewport' />
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">

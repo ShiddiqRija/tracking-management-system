@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="col-sm-12">
-                    <button type="button" class="btn btn-primary waves-effect waves-light">
+                    <button type="button" onclick="getRecord()" class="btn btn-primary waves-effect waves-light">
                         Show Replay
                     </button>
                 </div>
@@ -134,6 +134,43 @@
                 to.value = datetimeLocal(datetime);
             }
         });
+    </script>
+    <!-- Request JS -->
+    <script type="text/javascript">
+        function getRecord() {
+            let data;
+            let device = $('#device').val();
+            let period = $('#period').val();
+            let from = $('#from').val();
+            let to = $('#to').val();
+            if (period != 'Custom') {
+                data = {
+                    device: device,
+                    period: Date.now()
+                }
+            } else {
+                data = {
+                    device: device,
+                    from: new Date(from).getTime(),
+                    to: new Date(to).getTime(),
+                }
+            }
+
+            $.ajax({
+                url: "{{ route('replay.store') }}",
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: data,
+                success: function(data) {
+                    console.log(data)
+                },
+                error: function(data) {
+                    console.log(data)
+                }
+            })
+        }
     </script>
     <!-- GMaps init -->
     <script type="text/javascript">

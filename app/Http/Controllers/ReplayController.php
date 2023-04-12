@@ -30,7 +30,7 @@ class ReplayController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->sendResponse($request->all(), 'Testing');
     }
 
     /**
