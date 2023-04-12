@@ -62,6 +62,7 @@
 
 @push('css')
 <link href="{{ asset('assets/libs/toastr/build/toastr.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @push('script')
@@ -69,4 +70,11 @@
 <script src="{{ asset('assets/js/pages/form-validation.init.js') }}"></script>
 <script src="{{ asset('assets/libs/toastr/build/toastr.min.js') }}"></script>
 <script src="{{ asset('assets/js/pages/notif.js') }}"></script>
+<script src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script>
+<!-- Page JS -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#device_id').select2();
+    });
+</script>
 @endpush
