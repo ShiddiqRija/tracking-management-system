@@ -143,10 +143,11 @@
             let period = $('#period').val();
             let from = $('#from').val();
             let to = $('#to').val();
+            
             if (period != 'Custom') {
                 data = {
                     device: device,
-                    period: Date.now()
+                    period: 'Today'
                 }
             } else {
                 data = {
