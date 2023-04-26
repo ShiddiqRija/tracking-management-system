@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\DeviceUpdate;
 use App\Http\Requests\PositionRequest;
 use App\Models\Device;
 use App\Models\Position;
@@ -79,6 +80,8 @@ class PositionController extends Controller
                     'position_id' => $position->id,
                     'last_update' => round(microtime(true) * 1000)
                 ]);
+
+                broadcast(new DeviceUpdate());
 
                 return $this->sendResponse($position, 'Position added successfully');
             } catch (\Exception $err) {

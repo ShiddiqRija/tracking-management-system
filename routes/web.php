@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\DeviceUpdate;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeviceController;
@@ -34,6 +35,9 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::resource('devices', DeviceController::class);
     Route::resource('messages', MessageController::class);
 
+    //Testing
+    
+
     //Settings Route
     Route::prefix('settings')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('settings.index');
@@ -55,4 +59,9 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
 
     //TESTING ROUTE
     Route::get('/deviceInfo', [PositionController::class, 'deviceInfo'])->name('deviceInfo');
+});
+
+Route::get('/broad', function () {
+    broadcast(new DeviceUpdate());
+    echo "broadcast";
 });
