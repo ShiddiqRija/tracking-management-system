@@ -95,9 +95,9 @@
 
         markerInit();
 
-        setInterval(() => {
+        Echo.channel("device-update").listen("DeviceUpdate", (e) => {
             markerUpdate();
-        }, 5000);
+        });
 
         map = new GMaps({
             div: "#map",
@@ -241,7 +241,6 @@
         getDevice();
 
         Echo.channel("device-update").listen("DeviceUpdate", (e) => {
-            console.log("Update");
             getDevice();
         });
 
