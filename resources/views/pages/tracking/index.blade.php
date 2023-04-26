@@ -24,6 +24,7 @@
                         <p class="mb-1"><i class="mdi mdi-account-heart"></i> : 70 <i class="mdi mdi-temperature-celsius"></i> : 36.2</p>
                     </div>
                     <span class="my-auto">
+                        <i class="mdi mdi-information text-danger"></i>
                         <small><i class="mdi mdi-battery"></i>45%</small>
                     </span>
                 </div>
@@ -238,7 +239,7 @@
                             .addClass("list-group-item list-group-item-action device-item-list")
                             .attr("data-marker-index", `${index}`)
                             .attr("aria-current", "true")
-                            .html('<div class="d-flex w-100 justify-content-between"><div><h5 class="mb-1">' + device.name + '</h5><p class="mb-1"><i class="mdi mdi-account-heart"></i> : ' + attributes.heartRate + ' <i class="mdi mdi-temperature-celsius"></i> : ' + attributes.weatherTemp + '</p></div><span class="my-auto"><small><i class="mdi mdi-battery"></i>' + attributes.batteryLevel + '%</small></span></div>');
+                            .html('<div class="d-flex w-100 justify-content-between"><div><h5 class="mb-1">' + device.name + '</h5><p class="mb-1"><i class="mdi mdi-account-heart"></i> : ' + attributes.heartRate + ' <i class="mdi mdi-temperature-celsius"></i> : ' + attributes.weatherTemp + '</p></div><span class="my-auto">' + (attributes.sos ? '<i class="mdi mdi-information text-danger"></i>' : '') +'<small><i class="mdi mdi-battery"></i>' + attributes.batteryLevel + '%</small></span></div>');
                         deviceList.append(button);
                     });
                 }
