@@ -9,10 +9,13 @@ class Position extends Model
 {
     use HasFactory;
 
+    public $incrementing = false;
+
     protected $fillable = [
         'id',
         'device_id',
-        'location',
+        'latitude',
+        'longitude',
         'server_time',
         'device_time',
         'attributes',

@@ -1,9 +1,12 @@
 <?php
 
+use App\Events\DeviceUpdate;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\PositionController;
+use App\Http\Controllers\ReplayController;
 use App\Http\Controllers\Settings\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,8 +29,14 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
         return view('pages.dashboard.index');
     })->name('dashboard');
 
+    Route::resource('tracking', PositionController::class);
+    Route::get('/replay', [ReplayController::class, 'index'])->name('replay');
+    Route::post('/replay', [ReplayController::class, 'store'])->name('replay.store');
     Route::resource('devices', DeviceController::class);
     Route::resource('messages', MessageController::class);
+
+    //Testing
+    
 
     //Settings Route
     Route::prefix('settings')->group(function () {
@@ -47,4 +56,12 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::get('/list/messages', [MessageController::class, 'messageLists'])->name('message-list');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    //TESTING ROUTE
+    Route::get('/deviceInfo', [PositionController::class, 'deviceInfo'])->name('deviceInfo');
+});
+
+Route::get('/broad', function () {
+    broadcast(new DeviceUpdate());
+    echo "broadcast";
 });

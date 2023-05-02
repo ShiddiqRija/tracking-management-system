@@ -16,6 +16,13 @@
                     </a>
                 </li>
 
+                <li class="{{ $page == 'tracking' ? 'mm-active' : '' }}">
+                    <a href="{{ route('tracking.index') }}" class="waves-effect">
+                        <i class="mdi mdi-google-maps"></i>
+                        <span>tracking</span>
+                    </a>
+                </li>
+
                 <li class="{{ $page == 'devices' ? 'mm-active' : '' }}">
                     <a href="{{ route('devices.index') }}" class="waves-effect">
                         <i class="mdi mdi-watch-variant"></i>
