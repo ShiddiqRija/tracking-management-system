@@ -117,6 +117,11 @@ class MessageController extends Controller
 
         return DataTables::of($messages)
             ->addIndexColumn()
+            ->addColumn('deviceName', function($data) {
+                $device = Device::where('id', $data->device_id)->first();
+                return $device->name;
+            })
+            ->rawColumns(['deviceName'])
             ->make(true);
     }
 }
