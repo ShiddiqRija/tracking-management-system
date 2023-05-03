@@ -88,8 +88,8 @@
                 data: 'message',
                 name: 'message'
             }, {
-                data: 'sendTime',
-                name: 'sendTime'
+                data: 'send_time',
+                name: 'send_time'
             }]
         });
     })
