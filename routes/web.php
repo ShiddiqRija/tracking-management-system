@@ -60,8 +60,3 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     //TESTING ROUTE
     Route::get('/deviceInfo', [PositionController::class, 'deviceInfo'])->name('deviceInfo');
 });
-
-Route::get('/broad', function () {
-    broadcast(new DeviceUpdate());
-    echo "broadcast";
-});

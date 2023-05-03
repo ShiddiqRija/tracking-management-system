@@ -121,12 +121,7 @@ class MessageController extends Controller
                 $device = Device::where('device_id', $data->device_id)->first();
                 return $device->name;
             })
-            ->editColumn('send_time', function ($data) {
-                $second = $data->send_time / 1000;
-                $datetime = date("d-m-Y H:i:s", strtotime(date('Y-m-d H:i:s', $second)));
-                return $datetime;
-            })
-            ->rawColumns(['deviceName', 'send_time'])
+            ->rawColumns(['deviceName'])
             ->make(true);
     }
 }

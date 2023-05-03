@@ -90,7 +90,17 @@
             }, {
                 data: 'send_time',
                 name: 'send_time'
-            }]
+            }],
+            columnDefs: [{
+                targets: 4,
+                data: 'send_time',
+                render: function(data, type, row, meta) {
+                    let currentMillis = data; // contoh nilai dalam format millisecond
+
+                    let localDatetime = new Date(currentMillis).toLocaleString();
+                    return localDatetime;
+                }
+            }],
         });
     })
 </script>
