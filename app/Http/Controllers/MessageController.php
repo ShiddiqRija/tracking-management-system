@@ -117,11 +117,16 @@ class MessageController extends Controller
 
         return DataTables::of($messages)
             ->addIndexColumn()
-            ->addColumn('deviceName', function($data) {
-                $device = Device::where('id', $data->device_id)->first();
+            ->addColumn('deviceName', function ($data) {
+                $device = Device::where('device_id', $data->device_id)->first();
                 return $device->name;
             })
-            ->rawColumns(['deviceName'])
+            ->editColumn('send_time', function ($data) {
+                $second = $data->send_time / 1000;
+                $datetime = date("d-m-Y H:i:s", strtotime(date('Y-m-d H:i:s', $second)));
+                return $datetime;
+            })
+            ->rawColumns(['deviceName', 'send_time'])
             ->make(true);
     }
 }
