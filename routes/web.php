@@ -1,6 +1,5 @@
 <?php
 
-use App\Events\DeviceUpdate;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeviceController;
@@ -8,8 +7,6 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ReplayController;
 use App\Http\Controllers\Settings\UserController;
-use App\Models\Position;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -61,13 +58,4 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
 
     //TESTING ROUTE
     Route::get('/deviceInfo', [PositionController::class, 'deviceInfo'])->name('deviceInfo');
-    Route::get('testing', function () {
-        date_default_timezone_set('Asia/Jakarta');
-        $currentMillis = round(microtime(true) * 1000);
-        $currentTime = Carbon::createFromTimestampMs($currentMillis);
-        $startOfDay = $currentTime->startOfDay()->timestamp * 1000;
-        $endOfDay = $currentTime->endOfDay()->timestamp * 1000;
-
-        echo Position::where('device_id', 35)->whereBetween('device_time', [$startOfDay, $endOfDay])->get();
-    });
 });
