@@ -162,7 +162,15 @@
         var endLat = -6.2269; // Koordinat latitude akhir
         var endLng = 106.8283; // Koordinat longitude akhir
 
-        var waypoints = [{
+        var waypoints = [
+            {
+                location: {
+                    lat: -6.2088,
+                    lng: 106.8456
+                },
+                stopover: true,
+            }, // Koordinat origin
+            {
                 location: {
                     lat: -6.2154,
                     lng: 106.8415
@@ -209,10 +217,6 @@
 
             map.removeMarkers();
 
-            if (currentWaypointIndex == waypoints.length - 1) {
-                $('#forward').attr('disabled', 'disabled');
-            }
-
             if (currentWaypointIndex < waypoints.length) {
                 $('#back').removeAttr('disabled');
 
@@ -224,6 +228,10 @@
                 currentWaypointIndex++;
             }
 
+            if (currentWaypointIndex == waypoints.length - 1) {
+                $('#forward').attr('disabled', 'disabled');
+            }
+
             console.log(currentWaypointIndex);
         })
 
@@ -231,10 +239,6 @@
             e.preventDefault();
 
             map.removeMarkers();
-
-            if (currentWaypointIndex == 0) {
-                $('#back').attr('disabled', 'disabled');
-            }
 
             if (currentWaypointIndex > 0) {
                 currentWaypointIndex--;
@@ -245,6 +249,10 @@
                     lat: waypoints[currentWaypointIndex].location.lat,
                     lng: waypoints[currentWaypointIndex].location.lng,
                 });
+            }
+
+            if (currentWaypointIndex == 0) {
+                $('#back').attr('disabled', 'disabled');
             }
 
             console.log(currentWaypointIndex);
