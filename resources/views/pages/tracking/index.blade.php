@@ -8,24 +8,13 @@
         <div class="card">
             <div class="card-body">
                 <div class="col-sm-12">
-                    <label class="visually-hidden" for="search-devices"
-                        >Device</label
-                    >
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="search-devices"
-                        placeholder="Search Device"
-                    />
+                    <label class="visually-hidden" for="search-devices">Device</label>
+                    <input type="text" class="form-control" id="search-devices" placeholder="Search Device" />
                 </div>
             </div>
         </div>
 
-        <div
-            class="list-group"
-            id="device-list"
-            style="max-height: 78vh; overflow-y: auto"
-        >
+        <div class="list-group" id="device-list" style="max-height: 78vh; overflow-y: auto">
             <!-- <button class="list-group-item list-group-item-action" aria-current="true">
                 <div class="d-flex w-100 justify-content-between">
                     <div>
@@ -66,11 +55,7 @@
 
 @endsection @push('css')
 <!-- Action Notif -->
-<link
-    href="{{ asset('assets/libs/toastr/build/toastr.min.css') }}"
-    rel="stylesheet"
-    type="text/css"
-/>
+<link href="{{ asset('assets/libs/toastr/build/toastr.min.css') }}" rel="stylesheet" type="text/css" />
 <style>
     .page-content {
         padding: calc(70px + 24px) calc(24px / 2) 0px calc(24px / 2);
@@ -82,14 +67,15 @@
 <script src="{{ asset('assets/js/pages/notif.js') }}"></script>
 <!-- google maps api -->
 <!-- <script src="https://maps.google.com/maps/api/js?key=AIzaSyB5OXoMmPKwLbrSWAF8D2cp_yP0lDS8oPo"></script> -->
-<script src="https://maps.google.com/maps/api/js?key=AIzaSyCMuyTDQ4zd__ZPPja86kIefxTcK2fiqVE"></script>
+<!-- <script src="https://maps.google.com/maps/api/js?key=AIzaSyCMuyTDQ4zd__ZPPja86kIefxTcK2fiqVE"></script> -->
+<script src="https://maps.google.com/maps/api/js?key=AIzaSyA1MgLuZuyqR_OGY3ob3M52N46TDBRI_9k"></script>
 <!-- Gmaps file -->
 <script src="{{ asset('assets/libs/gmaps/gmaps.min.js') }}"></script>
 <script src="{{ asset('assets/libs/gmaps/markerCluster.js') }}"></script>
 @vite(['resources/js/app.js'])
 <!-- GMaps init -->
 <script type="text/javascript">
-    $(document).ready(function () {
+    $(document).ready(function() {
         var map;
         var markers = [];
 
@@ -105,10 +91,9 @@
             lng: 104.0652815,
             zoom: 11,
             disableDefaultUI: true,
-            markerClusterer: function (map) {
+            markerClusterer: function(map) {
                 return new MarkerClusterer(map, [], {
-                    styles: [
-                        {
+                    styles: [{
                             url: "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m1.png",
                             height: 53,
                             width: 53,
@@ -142,7 +127,7 @@
             $.ajax({
                 url: "{{ route('deviceInfo') }}",
                 type: "GET",
-                success: function (data) {
+                success: function(data) {
                     for (var i = 0; i < markers.length; i++) {
                         markers[i].setMap(null);
                     }
@@ -199,7 +184,7 @@
             $.ajax({
                 url: "{{ route('deviceInfo') }}",
                 type: "GET",
-                success: function (data) {
+                success: function(data) {
                     for (let i = 0; i < data.length; i++) {
                         markers[i].setPosition({
                             lat: parseFloat(data[i].location.latitude),
@@ -211,7 +196,7 @@
         }
 
         //update center to the device
-        $(document).on("click", ".device-item-list", function (e) {
+        $(document).on("click", ".device-item-list", function(e) {
             e.preventDefault();
 
             var lat, lng;
@@ -237,7 +222,7 @@
 </script>
 <!-- Device init -->
 <script type="text/javascript">
-    $(document).ready(function () {
+    $(document).ready(function() {
         getDevice();
 
         Echo.channel("device-update").listen("DeviceUpdate", (e) => {
@@ -252,10 +237,10 @@
             $.ajax({
                 url: "{{ route('deviceInfo') }}",
                 type: "GET",
-                success: function (data) {
+                success: function(data) {
                     var deviceList = $("#device-list");
                     deviceList.empty();
-                    $.each(data, function (index, device) {
+                    $.each(data, function(index, device) {
                         let attributes = JSON.parse(device.location.attributes);
                         var button = $("<button>")
                             .addClass(
@@ -265,18 +250,18 @@
                             .attr("aria-current", "true")
                             .html(
                                 '<div class="d-flex w-100 justify-content-between"><div><h5 class="mb-1">' +
-                                    device.name +
-                                    '</h5><p class="mb-1"><i class="mdi mdi-account-heart"></i> : ' +
-                                    attributes.heartRate +
-                                    ' <i class="mdi mdi-temperature-celsius"></i> : ' +
-                                    attributes.weatherTemp +
-                                    '</p></div><span class="my-auto">' +
-                                    (attributes.alarm == "sos"
-                                        ? '<i class="mdi mdi-information text-danger"></i>'
-                                        : "") +
-                                    '<small><i class="mdi mdi-battery"></i>' +
-                                    attributes.batteryLevel +
-                                    "%</small></span></div>"
+                                device.name +
+                                '</h5><p class="mb-1"><i class="mdi mdi-account-heart"></i> : ' +
+                                attributes.heartRate +
+                                ' <i class="mdi mdi-temperature-celsius"></i> : ' +
+                                attributes.weatherTemp +
+                                '</p></div><span class="my-auto">' +
+                                (attributes.alarm == "sos" ?
+                                    '<i class="mdi mdi-information text-danger"></i>' :
+                                    "") +
+                                '<small><i class="mdi mdi-battery"></i>' +
+                                attributes.batteryLevel +
+                                "%</small></span></div>"
                             );
                         deviceList.append(button);
                     });
@@ -286,7 +271,7 @@
 
         function filterButtons(searchValue) {
             var buttons = $("#device-list button");
-            buttons.each(function () {
+            buttons.each(function() {
                 var buttonName = $(this).find("h5").text().toLowerCase();
                 if (buttonName.includes(searchValue)) {
                     $(this).show();
@@ -296,7 +281,7 @@
             });
         }
 
-        $("#search-devices").on("input", function () {
+        $("#search-devices").on("input", function() {
             var searchValue = $(this).val().toLowerCase();
             filterButtons(searchValue);
         });
