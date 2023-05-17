@@ -45,10 +45,15 @@
                     </div>
                 </div>
 
-                <div class="col-sm-12">
-                    <button type="button" onclick="getRecord()" class="btn btn-primary waves-effect waves-light">
-                        Show Replay
-                    </button>
+                <div class="col-sm-12 d-flex justify-content-between">
+                    <button type="button" id="back" class="btn btn-primary waves-effect waves-light">
+                        << </button>
+                            <button type="button" onclick="getRecord()" class="btn btn-primary waves-effect waves-light">
+                                Get Replay
+                            </button>
+                            <button type="button" id="forward" class="btn btn-primary waves-effect waves-light">
+                                >>
+                            </button>
                 </div>
 
             </div>
@@ -137,13 +142,122 @@
     </script>
     <!-- Request JS -->
     <script type="text/javascript">
+        // GMaps Init
+        var map;
+        var currentWaypointIndex = 0;
+
+        $('#forward').attr('disabled', 'disabled');
+        $('#back').attr('disabled', 'disabled');
+
+        map = new GMaps({
+            div: '#map',
+            lat: 1.1134006,
+            lng: 104.0652815,
+            zoom: 11,
+            disableDefaultUI: true,
+        });
+
+        var startLat = -6.2088; // Koordinat latitude awal
+        var startLng = 106.8456; // Koordinat longitude awal
+        var endLat = -6.2269; // Koordinat latitude akhir
+        var endLng = 106.8283; // Koordinat longitude akhir
+
+        var waypoints = [{
+                location: {
+                    lat: -6.2154,
+                    lng: 106.8415
+                },
+                stopover: true,
+            }, // Koordinat waypoint 1
+            {
+                location: {
+                    lat: -6.2222,
+                    lng: 106.8352
+                },
+                stopover: true,
+            }, // Koordinat waypoint 2
+            {
+                location: {
+                    lat: -6.2198,
+                    lng: 106.8237
+                },
+                stopover: true,
+            }, // Koordinat waypoint 3
+            {
+                location: {
+                    lat: -6.2269,
+                    lng: 106.8283
+                },
+                stopover: true,
+            } // Koordinat destination
+        ];
+
+        console.log(waypoints[0])
+
+        map.drawRoute({
+            origin: [startLat, startLng],
+            destination: [endLat, endLng],
+            waypoints: waypoints, // Array dari koordinat waypoints
+            travelMode: 'walking',
+            strokeColor: '#FF0000',
+            strokeOpacity: 1,
+            strokeWeight: 2
+        });
+
+        $('#forward').click(function(e) {
+            e.preventDefault();
+
+            map.removeMarkers();
+
+            if (currentWaypointIndex == waypoints.length - 1) {
+                $('#forward').attr('disabled', 'disabled');
+            }
+
+            if (currentWaypointIndex < waypoints.length) {
+                $('#back').removeAttr('disabled');
+
+                map.addMarker({
+                    lat: waypoints[currentWaypointIndex + 1].location.lat,
+                    lng: waypoints[currentWaypointIndex + 1].location.lng,
+                });
+
+                currentWaypointIndex++;
+            }
+
+            console.log(currentWaypointIndex);
+        })
+
+        $('#back').click(function(e) {
+            e.preventDefault();
+
+            map.removeMarkers();
+
+            if (currentWaypointIndex == 0) {
+                $('#back').attr('disabled', 'disabled');
+            }
+
+            if (currentWaypointIndex > 0) {
+                currentWaypointIndex--;
+
+                $('#forward').removeAttr('disabled');
+
+                map.addMarker({
+                    lat: waypoints[currentWaypointIndex].location.lat,
+                    lng: waypoints[currentWaypointIndex].location.lng,
+                });
+            }
+
+            console.log(currentWaypointIndex);
+        })
+
+        //Get Record Position
         function getRecord() {
             let data;
             let device = $('#device').val();
             let period = $('#period').val();
             let from = $('#from').val();
             let to = $('#to').val();
-            
+
             if (period != 'Custom') {
                 data = {
                     device: device,
@@ -165,27 +279,17 @@
                 },
                 data: data,
                 success: function(data) {
-                    console.log(data)
+                    map.addMarker({
+                        lat: -6.2088,
+                        lng: 106.8456,
+                    })
+
+                    $('#forward').removeAttr('disabled');
                 },
                 error: function(data) {
                     console.log(data)
                 }
             })
         }
-    </script>
-    <!-- GMaps init -->
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var map;
-
-            map = new GMaps({
-                div: '#map',
-                lat: 1.1134006,
-                lng: 104.0652815,
-                zoom: 11,
-                disableDefaultUI: true,
-            });
-
-        });
     </script>
     @endpush
